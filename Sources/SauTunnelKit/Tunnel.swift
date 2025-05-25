@@ -1,25 +1,15 @@
 import Foundation
-import Tun2SocksKitC
-import HevSocks5Tunnel
+import SauTunnelKitC
+import SauTunnel
 
-public enum Socks5Tunnel {
+public enum STunnel {
 
-    public enum Config {
+    public enum Configuration {
         case file(path: URL)
         case string(content: String)
     }
 
-    public struct Stats {
-        public struct Stat {
-            public let packets: Int
-            public let bytes: Int
-        }
-        
-        public let up: Stat
-        public let down: Stat
-    }
-
-    private static var tunnelFileDescriptor: Int32? {
+    private static var tfd: Int32? {
         var ctlInfo = ctl_info()
         withUnsafeMutablePointer(to: &ctlInfo.ctl_name) {
             $0.withMemoryRebound(to: CChar.self, capacity: MemoryLayout.size(ofValue: $0.pointee)) {
@@ -51,15 +41,15 @@ public enum Socks5Tunnel {
         return nil
     }
     
-    public static func run(withConfig config: Config, completionHandler: @escaping (Int32) -> ()) {
+    public static func start(withConfig config: Configuration, completionHandler: @escaping (Int32) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async { [completionHandler] () in
-            let code: Int32 = Socks5Tunnel.run(withConfig: config)
+            let code: Int32 = SauTunnel.start(withConfig: config)
             completionHandler(code)
         }
     }
 
-    public static func run(withConfig config: Config) -> Int32 {
-        guard let fileDescriptor = tunnelFileDescriptor else {
+    public static func start(withConfig config: Configuration) -> Int32 {
+        guard let fileDescriptor = tfd else {
             return -1
         }
         switch config {
@@ -70,19 +60,7 @@ public enum Socks5Tunnel {
         }
     }
     
-    public static var stats: Stats {
-        var tPackets: Int = 0
-        var tBytes: Int = 0
-        var rPackets: Int = 0
-        var rBytes: Int = 0
-        hev_socks5_tunnel_stats(&tPackets, &tBytes, &rPackets, &rBytes)
-        return Stats(
-            up: Stats.Stat(packets: tPackets, bytes: tBytes),
-            down: Stats.Stat(packets: rPackets, bytes: rBytes)
-        )
-    }
-    
-    public static func quit() {
+    public static func stop() {
         hev_socks5_tunnel_quit()
     }
 }

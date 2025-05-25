@@ -3,30 +3,30 @@
 import PackageDescription
 
 let package = Package(
-  name: "Tun2SocksKit",
+  name: "SauTunnelKit",
   products: [
     .library(
-        name: "Tun2SocksKit",
-        targets: ["Tun2SocksKit"]
+        name: "SauTunnelKit",
+        targets: ["SauTunnelKit"]
     ),
     .library(
-        name: "Tun2SocksKitC",
-        targets: ["Tun2SocksKitC"]
+        name: "SauTunnelKitC",
+        targets: ["SauTunnelKitC"]
     )
   ],
   targets: [
     .target(
-        name: "Tun2SocksKit",
-        dependencies: ["HevSocks5Tunnel", "Tun2SocksKitC"]
+        name: "SauTunnelKit",
+        dependencies: ["SauTunnel", "SauTunnelKitC"]
     ),
     .target(
-        name: "Tun2SocksKitC",
+        name: "SauTunnelKitC",
         publicHeadersPath: "."
     ),
     .binaryTarget(
-        name: "HevSocks5Tunnel",
-        url: "https://github.com/saudevteam/sau_proxy/releases/download/2.10.0/HevSocks5Tunnel.xcframework.zip",
-        checksum: "ac28f486ec9f6504c2059277df3775651a77341f3c565745fd65480e80c8f3af"
+        name: "SauTunnel",
+        url: "https://github.com/saudevteam/sau_proxy/releases/download/2.11.0/SauTunnel.xcframework.zip",
+        checksum: "7bef6596184ebf7fbc1a60ca83d35fa26e91e111a252801dd0118cde0adbd137"
     )
   ]
 )
