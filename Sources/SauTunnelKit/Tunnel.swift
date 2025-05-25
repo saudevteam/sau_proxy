@@ -43,7 +43,7 @@ public enum STunnel {
     
     public static func start(withConfig config: Configuration, completionHandler: @escaping (Int32) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async { [completionHandler] () in
-            let code: Int32 = SauTunnel.start(withConfig: config)
+            let code: Int32 = STunnel.start(withConfig: config)
             completionHandler(code)
         }
     }
