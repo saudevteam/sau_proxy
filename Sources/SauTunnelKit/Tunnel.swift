@@ -1,6 +1,6 @@
 import Foundation
 import SauTunnelKitC
-import SauTunnel
+import HevSocks5Tunnel
 
 public enum STunnel {
 
